@@ -18,7 +18,7 @@ public class TaskController {
     private ITaskRepository taskRepository;
 
     @PostMapping("/")
-    public ResponseEntity create(@RequestBody TaskModel taskModel, HttpServletRequest request) {
+    public ResponseEntity<?> create(@RequestBody TaskModel taskModel, HttpServletRequest request) {
         var idUser = request.getAttribute("idUser");
         taskModel.setIdUser((UUID) idUser);
 
@@ -39,14 +39,14 @@ public class TaskController {
     }
 
     @GetMapping("/")
-    public ResponseEntity list(@RequestBody TaskModel taskModel, HttpServletRequest request) {
+    public ResponseEntity<?> list(@RequestBody TaskModel taskModel, HttpServletRequest request) {
         var idUser = request.getAttribute("idUser");
         var task = this.taskRepository.findByIdUser((UUID) idUser);
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity list(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
+    public ResponseEntity<?> list(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request) {
         var task = this.taskRepository.findById(id).orElse(null);
         if (task == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tarefa não encontrada");
 
